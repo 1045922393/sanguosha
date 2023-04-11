@@ -1,0 +1,20 @@
+diff --git a/dist/index.cjs b/dist/index.cjs
+index 5008b2ef5acea9bef48618001e29a7acc4572386..9401005a1360ba3cc17cd5474e3d06a7e560594b 100644
+--- a/dist/index.cjs
++++ b/dist/index.cjs
+@@ -2,11 +2,11 @@
+ 
+ Object.defineProperty(exports, '__esModule', { value: true });
+ 
+-const fs = require('node:fs');
++const fs = require('fs');
+ const vite = require('vite');
+-const node_module = require('node:module');
+-const path = require('node:path');
+-const node_crypto = require('node:crypto');
++const node_module = require('module');
++const path = require('path');
++const node_crypto = require('crypto');
+ const require$$0 = require('tty');
+ const require$$1 = require('util');
+ 

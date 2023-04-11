@@ -1,0 +1,32 @@
+diff --git a/dist/node-cjs/publicUtils.cjs b/dist/node-cjs/publicUtils.cjs
+index e12c951ce4a5ef4536202ef1a316b27cb8b7155d..4f0657e2fc846945b6ca7d61eb67cdb2964ad7ce 100644
+--- a/dist/node-cjs/publicUtils.cjs
++++ b/dist/node-cjs/publicUtils.cjs
+@@ -2,20 +2,20 @@
+ 
+ Object.defineProperty(exports, '__esModule', { value: true });
+ 
+-var path$3 = require('node:path');
+-var node_url = require('node:url');
++var path$3 = require('path');
++var node_url = require('url');
+ var esbuild = require('esbuild');
+ var rollup = require('rollup');
+-var fs$1 = require('node:fs');
+-var os$1 = require('node:os');
+-var node_util = require('node:util');
+-var node_module = require('node:module');
++var fs$1 = require('fs');
++var os$1 = require('os');
++var node_util = require('util');
++var node_module = require('module');
+ var require$$0 = require('tty');
+ var require$$1 = require('util');
+ var require$$0$1 = require('path');
+ var require$$0$2 = require('crypto');
+ var require$$1$1 = require('fs');
+-var readline = require('node:readline');
++var readline = require('readline');
+ var require$$2 = require('os');
+ 
+ function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e["default"] : e; }
