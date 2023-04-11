@@ -17,7 +17,12 @@
     </div>
   </div>
   <div class="hero_show confirm_hero" v-else>
-    <div class="hero_item" style="width: 300px" v-for="(item, index) in confirmHeros" :key="index">
+    <div
+      class="hero_item"
+      style="width: 100vw; max-width: 400px"
+      v-for="(item, index) in confirmHeros"
+      :key="index"
+    >
       <ElImage
         style="width: 100%; height: auto"
         :src="item"
@@ -36,7 +41,6 @@ const selectNum = ref(3);
 const allImgs = ref([]);
 const showImgs = ref([]);
 const initDone = ref(true);
-const heros = import.meta.glob('./heros/**/*.png');
 const confirmHeros = ref([]);
 
 function noSleep() {
@@ -72,15 +76,35 @@ const loadPng = async (country) => {
 
 const module2Src = async (heros) => {
   const imgs = [];
-  for (const png in heros) {
-    const res = await heros[png]();
+  for (const png of heros) {
+    const res = await png();
     imgs.push(res.default);
   }
   return imgs;
 };
+
+const sleep = () => {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve();
+    }, 3000);
+  });
+};
+
+const splitFetch = async (heros) => {
+  const herosArr = Object.values(heros);
+  const imgs = await module2Src(herosArr);
+  allImgs.value = allImgs.value.concat(imgs);
+  await sleep();
+};
+
 onMounted(async () => {
-  const imgs = await module2Src(heros);
-  allImgs.value = imgs;
+  await splitFetch(import.meta.glob('./heros/群/*.png'));
+  await splitFetch(import.meta.glob('./heros/晋/*.png'));
+  await splitFetch(import.meta.glob('./heros/蜀/*.png'));
+  await splitFetch(import.meta.glob('./heros/神/*.png'));
+  await splitFetch(import.meta.glob('./heros/魏/*.png'));
+  await splitFetch(import.meta.glob('./heros/吴/*.png'));
   initDone.value = false;
   noSleep();
 });

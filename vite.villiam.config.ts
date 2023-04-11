@@ -9,9 +9,9 @@ import commonConfig from './vite.common.config.ts';
 
 export default ({ command, mode }) => {
   return defineConfig({
-    base: '/sanguosha/',
+    base: '/sgsDist/',
     build: {
-      outDir: 'sanguosha',
+      outDir: 'sgsDist',
     },
     ...commonConfig,
   });
