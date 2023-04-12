@@ -3,7 +3,7 @@
     <!-- <ElInput class="control_input" v-model.number="selectNum" /> -->
     <ElSwitch v-model="isMaster" active-text="主公" inactive-text="非主公" />
     <ElSlider class="control_input" v-model.number="selectNum" :min="1" :max="7"></ElSlider>
-    <ElButton :disabled="initDone" @click="selectHero">确定</ElButton>
+    <ElButton @click="selectHero">确定</ElButton>
   </div>
   <div class="hero_show" v-if="confirmHeros.length === 0">
     <div class="hero_item" style="width: 300px" v-for="(item, index) in showImgs" :key="index">
@@ -105,7 +105,7 @@ const splitFetch = async (heros) => {
 };
 
 onMounted(async () => {
-  allImgs.value = herosDirect.map((item) => `${imgPreUrl}${item}`.replace(/(?<!\:)\/\//g, '/'));
+  allImgs.value = herosDirect.map((item) => `${imgPreUrl}${item}`);
   initDone.value = false;
   noSleep();
 });
