@@ -36,12 +36,16 @@
 <script setup>
 import { ElImage, ElButton, ElInput, ElSlider } from 'element-plus';
 import NoSleep from 'nosleep.js/dist/NoSleep.min.js';
+import herosDirect from './herosList';
 
 const selectNum = ref(3);
 const allImgs = ref([]);
 const showImgs = ref([]);
 const initDone = ref(true);
 const confirmHeros = ref([]);
+const imgPreUrl = import.meta.env.Prod
+  ? import.meta.env.BASE_URL
+  : 'https://static-mp-1c925fd0-d9e0-409d-b254-d061358b31f9.next.bspapp.com/sgsDist/';
 
 function noSleep() {
   let noSleep = new NoSleep();
@@ -99,12 +103,7 @@ const splitFetch = async (heros) => {
 };
 
 onMounted(async () => {
-  await splitFetch(import.meta.glob('./heros/群/*.png'));
-  await splitFetch(import.meta.glob('./heros/晋/*.png'));
-  await splitFetch(import.meta.glob('./heros/蜀/*.png'));
-  await splitFetch(import.meta.glob('./heros/神/*.png'));
-  await splitFetch(import.meta.glob('./heros/魏/*.png'));
-  await splitFetch(import.meta.glob('./heros/吴/*.png'));
+  allImgs.value = herosDirect.map((item) => `${imgPreUrl}${item}`.replace(/(?<!\:)\/\//g, '/'));
   initDone.value = false;
   noSleep();
 });
