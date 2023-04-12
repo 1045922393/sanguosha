@@ -1,6 +1,7 @@
 <template>
   <div class="control" v-if="confirmHeros.length === 0">
     <!-- <ElInput class="control_input" v-model.number="selectNum" /> -->
+    <ElSwitch v-model="isMaster" active-text="主公" inactive-text="非主公" />
     <ElSlider class="control_input" v-model.number="selectNum" :min="1" :max="7"></ElSlider>
     <ElButton :disabled="initDone" @click="selectHero">确定</ElButton>
   </div>
@@ -34,15 +35,16 @@
   </div>
 </template>
 <script setup>
-import { ElImage, ElButton, ElInput, ElSlider } from 'element-plus';
+import { ElSwitch, ElImage, ElButton, ElInput, ElSlider } from 'element-plus';
 import NoSleep from 'nosleep.js/dist/NoSleep.min.js';
-import herosDirect from './herosList';
+import herosDirect, { masterList } from './herosList';
 
 const selectNum = ref(3);
 const allImgs = ref([]);
 const showImgs = ref([]);
 const initDone = ref(true);
 const confirmHeros = ref([]);
+const isMaster = ref(false);
 const imgPreUrl = import.meta.env.Prod
   ? import.meta.env.BASE_URL
   : 'https://static-mp-1c925fd0-d9e0-409d-b254-d061358b31f9.next.bspapp.com/sgsDist/';
@@ -109,10 +111,10 @@ onMounted(async () => {
 });
 
 // 重复了就继续查找
-const getRandomAndPush = (arr = []) => {
-  const randIndex = random(0, allImgs.value.length - 1);
+const getRandomAndPush = (arr = [], AllArr = allImgs.value) => {
+  const randIndex = random(0, AllArr.length - 1);
   if (deepClone(arr).includes(randIndex)) {
-    return getRandomAndPush(arr);
+    return getRandomAndPush(arr, AllArr);
   } else {
     return randIndex;
   }
@@ -120,12 +122,26 @@ const getRandomAndPush = (arr = []) => {
 
 const selectHero = () => {
   const heroIndex = [];
-  for (let index = 0; index < selectNum.value; index++) {
-    heroIndex.push(getRandomAndPush(heroIndex));
+  if (isMaster.value) {
+    for (let index = 0; index < selectNum.value; index++) {
+      heroIndex.push(getRandomAndPush(heroIndex, masterList));
+    }
+    showImgs.value = heroIndex
+      .map((item) => {
+        return masterList[item];
+      })
+      .map((item) => {
+        return allImgs.value.find((urlItem) => urlItem.includes(item));
+      });
+  } else {
+    for (let index = 0; index < selectNum.value; index++) {
+      heroIndex.push(getRandomAndPush(heroIndex));
+    }
+    showImgs.value = heroIndex.map((item) => {
+      return allImgs.value[item];
+    });
   }
-  showImgs.value = heroIndex.map((item) => {
-    return allImgs.value[item];
-  });
+
   confirmHeros.value = [];
 };
 
@@ -142,7 +158,7 @@ const confirm = (imgSrc) => {
 
   .control_input {
     width: 200px;
-    margin-right: 18px;
+    margin: 0 18px;
   }
 }
 .hero_show {

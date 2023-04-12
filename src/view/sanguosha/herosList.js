@@ -517,3 +517,36 @@ export default [
   '/assets/wu_98.631cd78d.png',
   '/assets/wu_99.76b7bb84.png',
 ];
+
+export const masterList = [
+  'jin_1',
+  'jin_3',
+  'qun_66',
+  'qun_68',
+  'qun_84',
+  'qun_90',
+  'qun_125',
+  'qun_136',
+  'qun_137',
+  'qun_160',
+  'shu_67',
+  'shu_66',
+  'shu_76',
+  'shu_78',
+  'shu_95',
+  'shu_93',
+  'wei_20',
+  'wei_19',
+  'wei_56',
+  'wei_57',
+  'wei_67',
+  'wu_11',
+  'wu_15',
+  'wu_33',
+  'wu_48',
+  'wu_38',
+  'wu_37',
+  'wu_49',
+];
+
+export const countryList = ['qun_96', 'qun_97', 'qun_99', 'qun_100', 'qun_101'];
