@@ -1,7 +1,11 @@
 <template>
-  <ElIcon class="refresh" @click="handleRefreshPage" v-if="confirmHeros.length !== 0"
+  <ElIcon class="refresh icon" @click="handleRefreshPage" v-if="confirmHeros.length !== 0"
     ><RefreshLeft
   /></ElIcon>
+  <ElIcon class="pushHero icon" v-if="isZuoCi" @click="handlePushHero">
+    <Plus />
+  </ElIcon>
+  <span class="ZuoCiHeroNum" v-if="isZuoCi">{{ ZuoCiHeros.length }}</span>
   <div class="control" v-if="confirmHeros.length === 0">
     <!-- <ElInput class="control_input" v-model.number="selectNum" /> -->
     <ElSwitch v-model="isMaster" active-text="主公" inactive-text="普通" />
@@ -32,7 +36,7 @@
         style="width: 100vw; max-width: 400px; height: auto"
         :src="item"
         :zoom-rate="1.2"
-        :preview-src-list="[item]"
+        :preview-src-list="previewSrcListComp(item)"
         fit="cover"
         class="hero_item_img"
       />
@@ -61,19 +65,30 @@
 </template>
 <script setup>
 import { ElIcon, ElSwitch, ElImage, ElButton, ElInput, ElSlider } from 'element-plus';
-import { RefreshLeft } from '@element-plus/icons-vue';
+import { RefreshLeft, Plus } from '@element-plus/icons-vue';
 import NoSleep from 'nosleep.js/dist/NoSleep.min.js';
-import herosDirect, { masterList } from './herosList';
+import herosDirect, { masterList, zuoCiIds } from './herosList';
 
 const selectNum = ref(3);
-const allImgs = ref([]);
-const showImgs = ref([]);
+const allImgs = ref([]); // string[]
+const showImgs = ref([]); // string[]
 const initDone = ref(true);
-const confirmHeros = ref([]);
+
 const isMaster = ref(false);
 const imgPreUrl = import.meta.env.Prod
   ? '/sgsDist'
   : 'https://static-mp-1c925fd0-d9e0-409d-b254-d061358b31f9.next.bspapp.com/sgsDist';
+const confirmHeros = ref([]); // string[]
+
+const isZuoCi = computed(() => {
+  let temp = false;
+  confirmHeros.value.forEach((item) => {
+    if (temp) return;
+    if (zuoCiIds.find((id) => item.includes(id))) temp = true;
+  });
+  // confirmHeros.value;
+  return temp;
+});
 
 function noSleep() {
   let noSleep = new NoSleep();
@@ -190,10 +205,28 @@ watch(
 
 const handleRefreshPage = () => {
   confirmHeros.value = [];
+  bloodList.value = bloodList.value.map(() => false);
+  // 清空座次
+  ZuoCiHeros.value = [];
 };
 
 function handleClickBlood(item, index) {
   bloodList.value[index] = !item;
+}
+
+// 左慈逻辑
+const ZuoCiHeros = ref([]);
+
+function handlePushHero() {
+  ZuoCiHeros.value.push(allImgs.value[getRandomAndPush([])]);
+}
+
+function previewSrcListComp(item) {
+  if (isZuoCi.value) {
+    return [item, ...ZuoCiHeros.value];
+  } else {
+    return [item];
+  }
 }
 </script>
 <style lang="less">
@@ -214,6 +247,20 @@ body {
   position: fixed;
   top: 4px;
   left: 4px;
+}
+
+.pushHero {
+  position: fixed;
+  top: 4px;
+  right: 4px;
+}
+
+.ZuoCiHeroNum {
+  position: fixed;
+  left: 48%;
+  top: 4px;
+}
+.icon {
   font-size: 20px;
   z-index: 100;
 }

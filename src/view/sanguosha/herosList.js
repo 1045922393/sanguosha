@@ -550,3 +550,5 @@ export const masterList = [
 ];
 
 export const countryList = ['qun_96', 'qun_97', 'qun_99', 'qun_100', 'qun_101'];
+
+export const zuoCiIds = ['qun_65', 'qun_145'];
