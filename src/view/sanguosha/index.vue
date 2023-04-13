@@ -46,8 +46,8 @@ const initDone = ref(true);
 const confirmHeros = ref([]);
 const isMaster = ref(false);
 const imgPreUrl = import.meta.env.Prod
-  ? import.meta.env.BASE_URL
-  : 'https://static-mp-1c925fd0-d9e0-409d-b254-d061358b31f9.next.bspapp.com/sgsDist/';
+  ? '/sgsDist'
+  : 'https://static-mp-1c925fd0-d9e0-409d-b254-d061358b31f9.next.bspapp.com/sgsDist';
 
 function noSleep() {
   let noSleep = new NoSleep();
