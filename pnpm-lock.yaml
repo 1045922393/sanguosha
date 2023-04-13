@@ -9,6 +9,7 @@ patchedDependencies:
     path: patches/@vitejs__plugin-vue@3.1.0.patch
 
 specifiers:
+  '@element-plus/icons-vue': ^2.1.0
   '@rollup/plugin-alias': ^3.1.9
   '@vitejs/plugin-vue': 3.1.0
   '@vue/compiler-sfc': ^3.0.4
@@ -31,6 +32,7 @@ specifiers:
   vue-router: ^4.0.16
 
 dependencies:
+  '@element-plus/icons-vue': 2.1.0_vue@3.2.39
   echarts: 4.9.0
   element-plus: 2.3.3_vue@3.2.39
   jquery: 3.6.3

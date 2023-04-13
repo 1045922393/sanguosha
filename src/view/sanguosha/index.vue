@@ -1,4 +1,7 @@
 <template>
+  <ElIcon class="refresh" @click="handleRefreshPage" v-if="confirmHeros.length !== 0"
+    ><RefreshLeft
+  /></ElIcon>
   <div class="control" v-if="confirmHeros.length === 0">
     <!-- <ElInput class="control_input" v-model.number="selectNum" /> -->
     <ElSwitch v-model="isMaster" active-text="主公" inactive-text="普通" />
@@ -8,6 +11,7 @@
   <div class="hero_show" v-if="confirmHeros.length === 0">
     <div class="hero_item" style="width: 300px" v-for="(item, index) in showImgs" :key="index">
       <ElImage
+        class="hero_item_img"
         style="width: 100%; height: auto"
         :src="item"
         :zoom-rate="1.2"
@@ -30,6 +34,7 @@
         :zoom-rate="1.2"
         :preview-src-list="[item]"
         fit="cover"
+        class="hero_item_img"
       />
       <div class="blood_list">
         <img
@@ -48,14 +53,15 @@
         class="control_input blood_control"
         style="width: 100vw; max-width: 350px"
         v-model.number="bloodNum"
-        :min="0"
-        :max="8"
+        :min="1"
+        :max="10"
       ></ElSlider>
     </div>
   </div>
 </template>
 <script setup>
-import { ElSwitch, ElImage, ElButton, ElInput, ElSlider } from 'element-plus';
+import { ElIcon, ElSwitch, ElImage, ElButton, ElInput, ElSlider } from 'element-plus';
+import { RefreshLeft } from '@element-plus/icons-vue';
 import NoSleep from 'nosleep.js/dist/NoSleep.min.js';
 import herosDirect, { masterList } from './herosList';
 
@@ -182,22 +188,35 @@ watch(
   },
 );
 
+const handleRefreshPage = () => {
+  confirmHeros.value = [];
+};
+
 function handleClickBlood(item, index) {
   bloodList.value[index] = !item;
 }
 </script>
-<style>
+<style lang="less">
 :root {
   --el-color-primary: #2d2d2d !important;
 }
 .el-slider {
   --el-slider-button-size: 14px !important;
 }
-.el-button {
-  padding: 0 8px !important;
+body {
+  .el-button {
+    border-radius: 16px;
+  }
 }
 </style>
 <style lang="less" scoped>
+.refresh {
+  position: fixed;
+  top: 4px;
+  left: 4px;
+  font-size: 20px;
+  z-index: 100;
+}
 .control {
   padding: 10px;
   display: flex;
@@ -244,6 +263,12 @@ function handleClickBlood(item, index) {
   .hero_item {
     margin: 6px;
     text-align: center;
+  }
+
+  .hero_item_img {
+    border-radius: 12px;
+    border: 1px solid #9f7f5b;
+    box-shadow: 0 0 2px 2px #fff;
   }
 }
 
