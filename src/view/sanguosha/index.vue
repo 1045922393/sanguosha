@@ -1,7 +1,7 @@
 <template>
   <div class="control" v-if="confirmHeros.length === 0">
     <!-- <ElInput class="control_input" v-model.number="selectNum" /> -->
-    <ElSwitch v-model="isMaster" active-text="主公" inactive-text="非主公" />
+    <ElSwitch v-model="isMaster" active-text="主公" inactive-text="普通" />
     <ElSlider class="control_input" v-model.number="selectNum" :min="1" :max="7"></ElSlider>
     <ElButton @click="selectHero">确定</ElButton>
   </div>
@@ -25,12 +25,32 @@
       :key="index"
     >
       <ElImage
-        style="width: 100%; height: auto"
+        style="width: 100vw; max-width: 400px; height: auto"
         :src="item"
         :zoom-rate="1.2"
         :preview-src-list="[item]"
         fit="cover"
       />
+      <div class="blood_list">
+        <img
+          v-for="(item, index) in bloodList"
+          :key="index"
+          style="width: 70px; height: auto; margin: 5px; border-radius: 50%"
+          src="@/assets/blood.jpg"
+          @click="handleClickBlood(item, index)"
+          class="bloodItem"
+          :class="{
+            scaleSmall: item,
+          }"
+        />
+      </div>
+      <ElSlider
+        class="control_input blood_control"
+        style="width: 100vw; max-width: 350px"
+        v-model.number="bloodNum"
+        :min="0"
+        :max="8"
+      ></ElSlider>
     </div>
   </div>
 </template>
@@ -148,8 +168,35 @@ const selectHero = () => {
 const confirm = (imgSrc) => {
   confirmHeros.value.push(imgSrc);
 };
-</script>
 
+const bloodNum = ref(4);
+const bloodList = ref([]);
+
+watch(
+  () => bloodNum.value,
+  (newVal) => {
+    bloodList.value = new Array(newVal).fill(false);
+  },
+  {
+    immediate: true,
+  },
+);
+
+function handleClickBlood(item, index) {
+  bloodList.value[index] = !item;
+}
+</script>
+<style>
+:root {
+  --el-color-primary: #2d2d2d !important;
+}
+.el-slider {
+  --el-slider-button-size: 14px !important;
+}
+.el-button {
+  padding: 0 8px !important;
+}
+</style>
 <style lang="less" scoped>
 .control {
   padding: 10px;
@@ -161,6 +208,10 @@ const confirm = (imgSrc) => {
     margin: 0 18px;
   }
 }
+.blood_control {
+  position: fixed;
+  bottom: 0;
+}
 .hero_show {
   display: flex;
   flex-wrap: wrap;
@@ -168,6 +219,26 @@ const confirm = (imgSrc) => {
   &.confirm_hero {
     height: 100vh;
     align-content: center;
+
+    .hero_item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .blood_list {
+      max-width: 100vw;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      .bloodItem {
+        transition: all 0.3s;
+      }
+      .scaleSmall {
+        transform: scale(0.6);
+        filter: brightness(0.4);
+      }
+    }
   }
 
   .hero_item {
